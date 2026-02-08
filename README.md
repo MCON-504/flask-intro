@@ -1,107 +1,326 @@
-# :wave: The Basics of GitHub 
+# Flask Fundamentals Exercise
 
-## 🤓 Course overview and learning outcomes 
+## Overview
 
-The goal of this course is to give you a brief introduction to GitHub. We’ll also provide you with materials for further learning and a few ideas to get you started on our platform. 🚀
+In this exercise, you'll build a simple Flask API and practice working with routes, request handling, and responses. You'll also use the `requests` library to test your API programmatically, reinforcing the client-server relationship we discussed in class.
 
-## :octocat: Git and GitHub
+## Learning Objectives
 
-Git is a **distributed Version Control System (VCS)**, which means it is a useful tool for easily tracking changes to your code, collaborating, and sharing. With Git you can track the changes you make to your project so you always have a record of what you’ve worked on and can easily revert back to an older version if need be. It also makes working with others easier—groups of people can work together on the same project and merge their changes into one final source!
+By the end of this exercise, you will be able to:
+- Create a Flask application with multiple routes
+- Handle different HTTP methods (GET, POST)
+- Return different response types (HTML, JSON, custom status codes)
+- Use route parameters and query strings
+- Test your Flask API using the `requests` library
+- Inspect Flask's URL map for debugging
 
-GitHub is a way to use the same power of Git all online with an easy-to-use interface. It’s used across the software world and beyond to collaborate and maintain the history of projects.
+## Prerequisites
 
-GitHub is home to some of the most advanced technologies in the world. Whether you're visualizing data or building a new game, there's a whole community and set of tools on GitHub that can get you to the next step. This course starts with the basics of GitHub, but we'll dig into the rest later.
+- Complete the Flask introduction lesson
+- Basic understanding of HTTP requests and responses
 
-## :octocat: Understanding the GitHub flow 
+## Setup Instructions
 
-The GitHub flow is a lightweight workflow that allows you to experiment and collaborate on your projects easily, without the risk of losing your previous work.
+### 1. Clone and Setup Your Repository
+```bash
+# Clone your GitHub Classroom repository
+git clone <your-repo-url>
+cd <repo-name>
 
-### Repositories
+# Create a virtual environment
+python -m venv venv
 
-A repository is where your project work happens--think of it as your project folder. It contains all of your project’s files and revision history.  You can work within a repository alone or invite others to collaborate with you on those files.
+# Activate the virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
 
-### Cloning 
+# Install dependencies
+pip install -r requirements.txt
+```
 
-When a repository is created with GitHub, it’s stored remotely in the ☁️. You can clone a repository to create a local copy on your computer and then use Git to sync the two. This makes it easier to fix issues, add or remove files, and push larger commits. You can also use the editing tool of your choice as opposed to the GitHub UI. Cloning a repository also pulls down all the repository data that GitHub has at that point in time, including all versions of every file and folder for the project! This can be helpful if you experiment with your project and then realize you liked a previous version more. 
-To learn more about cloning, read ["Cloning a Repository"](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository). 
+### 2. Verify Installation
+from terminal, run:
+```bash
+python -c "import flask; print(flask.__version__)"
+```
+## Part 1: Building Your Flask API  - In class exercise
 
-### Committing and pushing
-**Committing** and **pushing** are how you can add the changes you made on your local machine to the remote repository in GitHub. That way your instructor and/or teammates can see your latest work when you’re ready to share it. You can make a commit when you have made changes to your project that you want to “checkpoint.” You can also add a helpful **commit message** to remind yourself or your teammates what work you did (e.g. “Added a README with information about our project”).
+Create a file called `app.py` in your repository and implement the following routes:
 
-Once you have a commit or multiple commits that you’re ready to add to your repository, you can use the push command to add those changes to your remote repository. Committing and pushing may feel new at first, but we promise you’ll get used to it 🙂
+### Route 1: Welcome Endpoint
+- **URL:** `/`
+- **Method:** GET
+- **Response:** Return an HTML string with a welcome message
+- **Example:** `<h1>Welcome to My Flask API!</h1>`
 
-## 💻 GitHub terms to know 
+### Route 2: About Endpoint
+- **URL:** `/about`
+- **Method:** GET
+- **Response:** Return JSON with information about yourself
+- **Example:** `{"name": "Your Name", "course": "MCON-504 - Backend Development", "semester": "Spring 2025"}`
 
-### Repositories 
-We mentioned repositories already, they are where your project work happens, but let’s talk a bit more about the details of them! As you work more on GitHub you will have many repositories which may feel confusing at first. Fortunately, your ["GitHub dashboard"](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/about-your-personal-dashboard) helps to easily navigate to your repositories and see useful information about them. Make sure you’re logged in to see it!
+**Hint:** Use `jsonify()` from Flask to return JSON responses.
 
-Repositories also contain **README**s. You can add a README file to your repository to tell other people why your project is useful, what they can do with your project, and how they can use it. We are using this README to communicate how to learn Git and GitHub with you. 😄 
-To learn more about repositories read ["Creating, Cloning, and Archiving Repositories](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories) and ["About README's"](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-readmes). 
+### Route 3: Greeting with Name Parameter
+- **URL:** `/greet/<name>`
+- **Method:** GET
+- **Response:** Return a personalized greeting using the name from the URL
+- **Example:** When accessing `/greet/Lila`, return `<p>Hello, Lila! Welcome to Flask.</p>`
 
-### Branches
-You can use branches on GitHub to isolate work that you do not want merged into your final project just yet. Branches allow you to develop features, fix bugs, or safely experiment with new ideas in a contained area of your repository. Typically, you might create a new branch from the default branch of your repository—main. This makes a new working copy of your repository for you to experiment with. Once your new changes have been reviewed by a teammate, or you are satisfied with them, you can merge your changes into the default branch of your repository.
-To learn more about branching, read ["About Branches"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-branches).
+### Route 4: Calculator Endpoint
+- **URL:** `/calculate`
+- **Method:** GET
+- **Query Parameters:** `num1`, `num2`, `operation`
+- **Response:** Return JSON with the calculation result
+- **Operations:** Support `add`, `subtract`, `multiply`, `divide`
+- **Example:** `/calculate?num1=10&num2=5&operation=add` returns `{"result": 15, "operation": "add"}`
 
-### Forks
-A fork is another way to copy a repository, but is usually used when you want to contribute to someone else’s project. Forking a repository allows you to freely experiment with changes without affecting the original project and is very popular when contributing to open source software projects!
-To learn more about forking, read ["Fork a repo"](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo)
+**Hint:** Access query parameters using `request.args.get('parameter_name')`
 
-### Pull requests
-When working with branches, you can use a pull request to tell others about the changes you want to make and ask for their feedback. Once a pull request is opened, you can discuss and review the potential changes with collaborators and add more changes if need be. You can add specific people as reviewers of your pull request which shows you want their feedback on your changes! Once a pull request is ready-to-go, it can be merged into your main branch.
-To learn more about pull requests, read ["About Pull Requests"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests). 
+### Route 5: Echo Endpoint (POST)
+- **URL:** `/echo`
+- **Method:** POST
+- **Request Body:** JSON data
+- **Response:** Return the same JSON data back with an additional field `"echoed": true`
+- **Example:** If you POST `{"message": "Hello"}`, return `{"message": "Hello", "echoed": true}`
+
+**Hint:** Use `request.get_json()` to parse JSON from the request body.
+
+### Route 6: Status Code Practice
+- **URL:** `/status/<int:code>`
+- **Method:** GET
+- **Response:** Return a message with the specified HTTP status code
+- **Example:** `/status/404` returns `"This is a 404 error"` with status code 404
+
+**Hint:** Return a tuple: `(message, status_code)`
+
+### Running Your Flask App
+
+Add this to the bottom of your `app.py`:
+```python
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
+```
+
+Run your application:
+```bash
+python app.py
+```
+
+Or use the Flask CLI:
+```bash
+flask --app app run --debug
+```
+In the end of the class submit app.py to your GitHub repository.
+Make sure to test each route in your browser or using a tool like Postman to ensure they work as expected.
+To submit run from terminal
+```bash
+git add app.py
+git commit -m "Implement Flask API routes"
+git push origin main
+```
 
 
-### Issues
-Issues are a way to track enhancements, tasks, or bugs for your work on GitHub. Issues are a great way to keep track of all the tasks you want to work on for your project and let others know what you plan to work on. You can also use issues to tell a favorite open source project about a bug you found or a feature you think would be great to add!
+### Part 2 - Homework 
+Hooks and testing are important parts of Flask development. For homework, implement the following:
 
-For larger projects, you can keep track of many issues on a project board. GitHub Projects help you organize and prioritize your work and you can read more about them [in this "About Project boards document](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards). You likely won’t need a project board for your assignments, but once you move on to even bigger projects, they’re a great way to organize your team’s work!
-You can also link together pull requests and issues to show that a fix is in progress and to automatically close the issue when someone merges the pull request.
-To learn more about issues and linking them to your pull requests, read ["About Issues"](https://docs.github.com/en/github/managing-your-work-on-github/about-issues). 
+Add a route that demonstrates using `before_request` hook:
+- Create a `before_request` function that logs the request method and path to the console
+- Add it to your Flask app using the `@app.before_request` decorator
 
-### Your user profile
+Add a route that demonstrates using `after_request` hook:
+- Create an `after_request` function that adds a custom header `X-Custom-Header: FlaskRocks` to every response
+- Add it to your Flask app using the `@app.after_request` decorator
+- Test that the custom header is present in the response when you access any route
 
-Your profile page tells people the story of your work through the repositories you're interested in, the contributions you've made, and the conversations you've had. You can also give the world a unique view into who you are with your profile README. You can use your profile to let future employers know all about you! 
-To learn more about your user profile and adding and updating your profile README, read ["Managing Your Profile README"](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme). 
+Add a route that demonstrates using `teardown_request` hook:
+- Create a `teardown_request` function that logs any exceptions that occur during request handling
+- Add it to your Flask app using the `@app.teardown_request` decorator
+  - Test that the teardown function is called by intentionally causing an error in one of your routes (e.g., by dividing by zero in the calculator route) and checking the console logs for the exception
+  - Make sure to handle the exception properly in your route so that it doesn't crash the server, but still allows you to see the error in the logs.
+  - Example of handling the exception in the calculator route:
+    - ```python
+      @app.route('/calculate')
+      def calculate():
+          num1 = float(request.args.get('num1', 0))
+          num2 = float(request.args.get('num2', 0))
+          operation = request.args.get('operation')
+          try:
+              if operation == 'add':
+                  result = num1 + num2
+              elif operation == 'subtract':
+                  result = num1 - num2
+              elif operation == 'multiply':
+                  result = num1 * num2
+              elif operation == 'divide':
+                  result = num1 / num2
+              else:
+                  return jsonify({"error": "Invalid operation"}), 400
+              return jsonify({"result": result, "operation": operation})
+          except Exception as e:
+              # Log the exception and return an error response
+              print(f"Error occurred: {e}")
+              return jsonify({"error": "An error occurred during calculation"}), 500
+      ```
 
-### Using markdown on GitHub 
+    
+## Part 2: Testing with the Requests Library (15 minutes)
 
-You might have noticed already, but you can add some fun styling to your issues, pull requests, and files. ["Markdown"](https://guides.github.com/features/mastering-markdown/) is an easy way to style your issues, pull requests, and files with some simple syntax. This can be helpful to organize your information and make it easier for others to read. You can also drop in gifs and images to help convey your point!
-To learn more about using GitHub’s flavor of markdown, read ["Basic Writing and Formatting Syntax"](https://docs.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax). 
+Create a file called `test_api.py` that uses the `requests` library to test your Flask API.
 
-### Engaging with the GitHub community
+### Your Test Script Should:
 
-The GitHub community is vast. There are many types of people who use GitHub in their day to day—students like you, professional developers, hobbyists working on open source projects, and explorers who are just jumping into the world of software development on their own. There are many ways you can interact with the larger GitHub community, but here are three places where you can start. 
+1. **Test the Welcome Route**
+```python
+   response = requests.get('http://localhost:5000/')
+   print(f"Status Code: {response.status_code}")
+   print(f"Content: {response.text}")
+```
 
-#### Starring repositories 
+2. **Test the About Route**
+    - Make a GET request to `/about`
+    - Parse the JSON response
+    - Print the values
 
-If you find a repository interesting or you want to keep track of it, star it! When you star a repository it’s also used as a signal to surface better recommendations on github.com/explore. If you’d like to get back to your starred repositories you can do so via your user profile. 
-To learn  more about starring repositories, read ["Saving Repositories with Stars"](https://docs.github.com/en/github/getting-started-with-github/saving-repositories-with-stars). 
+3. **Test the Greeting Route**
+    - Make a request with your name in the URL
+    - Verify the response contains your name
 
-#### Following users 
+4. **Test the Calculator Route**
+    - Test at least two different operations
+    - Print the results
+    - Handle the case where division by zero might occur
 
-You can follow people on GitHub to receive notifications about their activity and discover projects in their communities. When you follow a user, their public GitHub activity will show up on your dashboard so you can see all the cool things they are working on. 
-To learn more about following users, read ["Following People"](https://docs.github.com/en/github/getting-started-with-github/following-people).
+5. **Test the Echo Route (POST)**
+    - Send JSON data using `requests.post()`
+    - Verify the response includes `"echoed": true`
 
-#### Browsing GitHub Explore 
+6. **Test Different Status Codes**
+    - Request at least two different status codes
+    - Print both the status code and response text
+7. **Test Custom Headers**
+    - Make a request to any route
+    - Verify that the response includes the `X-Custom-Header: FlaskRocks` header
+    - Print the value of the custom header from the response
+    - Example:
+    ```python
+    response = requests.get('http://localhost:5000/')
+    custom_header = response.headers.get('X-Custom-Header')
+    print(f"Custom Header: {custom_header}")
+    ```
+8. **Test Error Handling**
+    - Intentionally cause an error (e.g., division by zero in the calculator route)
+    - Verify that the error is handled gracefully and that the appropriate error message and status code are returned
+    - Example:
+    ```python
+        response = requests.get('http://localhost:5000/calculate?num1=10&num2=0&operation=divide')
+        print(f"Status Code: {response.status_code}")
+        print(f"Response: {response.json()}")
 
-GitHub Explore is a great place to do just that … explore :smile: You can find new projects, events, and developers to interact with.
+      ```
 
-You can check out the GitHub Explore website [at github.com/explore](https://github.com/explore). The more you interact with GitHub the more tailored your Explore view will be. 
+### Running Your Tests
 
-## 📝 Optional next steps 
+Make sure your Flask app is running in one terminal, then in another terminal:
+```bash
+python test_api.py
+```
 
-* Open a pull request and let your teacher know that you’ve finished this course.  
-* Create a new markdown file in this repository. Let them know what you learned and what you are still confused about! Experiment with different styles!
-* Create your profile README. Let the world know a little bit more about you! What are you interested in learning? What are you working on? What's your favorite hobby? Learn more about creating your profile README in the document, ["Managing Your Profile README"](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme).
-* Go to your user dashboard and create a new repository. Experiment with the features within that repository to familiarize yourself with them. 
-* [Let us know what you liked or didn’t like about the content of this course](https://support.github.com/contact/education). What would you like to see more of? What would be interesting or helpful to your learning journey? 
+## Part 3: Reflection and Debugging (10 minutes)
 
-## 📚  Resources 
-* [A short video explaining what GitHub is](https://www.youtube.com/watch?v=w3jLJU7DT5E&feature=youtu.be) 
-* [Git and GitHub learning resources](https://docs.github.com/en/github/getting-started-with-github/git-and-github-learning-resources) 
-* [Understanding the GitHub flow](https://guides.github.com/introduction/flow/)
-* [How to use GitHub branches](https://www.youtube.com/watch?v=H5GJfcp3p4Q&feature=youtu.be)
-* [Interactive Git training materials](https://githubtraining.github.io/training-manual/#/01_getting_ready_for_class)
-* [GitHub's Learning Lab](https://lab.github.com/)
-* [Education community forum](https://education.github.community/)
-* [GitHub community forum](https://github.community/)
+### Inspect Your URL Map
+
+Add this debug route to your `app.py`:
+```python
+@app.route('/debug/routes')
+def show_routes():
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            'endpoint': rule.endpoint,
+            'methods': list(rule.methods),
+            'path': str(rule)
+        })
+    return jsonify(routes)
+```
+
+Visit `http://localhost:5000/debug/routes` to see all your registered routes.
+
+### Answer These Questions
+
+Create a file called `REFLECTION.md` and answer:
+
+1. What does the `@app.route()` decorator actually do?
+2. How does Flask know which function to call when a request arrives?
+3. What's the difference between route parameters (`<name>`) and query parameters (`?key=value`)?
+4. Why do we need to use `request.get_json()` for POST requests but `request.args.get()` for GET query parameters?
+5. What happens if you try to access `request.args` outside of a request context?
+
+## Submission Checklist
+
+Before you submit, make sure you have:
+
+- [ ] `app.py` with all routes implemented 
+- [ ] `test_api.py` with tests for all your routes
+- [ ] `REFLECTION.md` with answers to the questions
+- [ ] All files committed and pushed to your GitHub repository
+- [ ] Tested that your Flask app runs without errors
+- [ ] Verified that your test script successfully calls all endpoints
+
+## Submission
+```bash
+git add .
+git commit -m "Complete Flask fundamentals homework"
+git push origin main
+```
+
+## Common Issues and Troubleshooting
+
+### Flask app won't start
+- Make sure you're in your virtual environment
+- Check that Flask is installed: `pip list | grep Flask`
+- Ensure no other process is using port 5000
+
+### Requests library can't connect
+- Make sure your Flask app is actually running
+- Verify you're using the correct URL: `http://localhost:5000`
+- Check that you haven't changed the default port
+
+### JSON parsing errors
+- Use `request.get_json()` for POST request bodies
+- Use `request.args.get()` for query parameters
+- Use `jsonify()` to return JSON responses
+
+### Import errors
+- Make sure you've activated your virtual environment
+- Reinstall requirements: `pip install -r requirements.txt`
+
+## Resources
+- [Flask Web Development](https://coddyschool.com/upload/Flask_Web_Development_Developing.pdf)
+- [Flask Quickstart Documentation](https://flask.palletsprojects.com/en/stable/quickstart/)
+- [Requests Library Documentation](https://requests.readthedocs.io/en/latest/)
+- [Flask Request Object](https://flask.palletsprojects.com/en/stable/api/#flask.Request)
+- [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+## Grading Rubric
+
+| Component | Points |
+|-----------|--------|
+| All 6 routes implemented correctly | 40 |
+| Test script covers all endpoints | 30 |
+| Code quality and organization | 15 |
+| Reflection questions answered | 15 |
+| **Total** | **100** |
+
+---
+
+**Questions?** Post in the class discussion board or attend office hours.
+
+**Need Help?** Remember to check:
+1. The lesson materials
+2. Flask error messages (they're usually helpful!)
+3. Ask your teacher or classmates for hints (but try to solve it yourself first!)
+4. Use online resources like Flask documentation
+Good luck! 
